@@ -1,0 +1,109 @@
+/* Basic */
+body {
+  margin:0;
+  padding:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:#0f0f17;
+  color:white;
+}
+
+/* Fade-in animation for page load */
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Center container for all pages */
+.centered-container {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+/* Card style with neon outline */
+.intro-card, .form-card, .dashboard-card {
+  background:#111122;
+  border-radius:20px;
+  padding:30px;
+  max-width:400px;
+  width:100%;
+  text-align:center;
+  border: 2px solid #0ff;
+  outline: 2px solid #0ff;
+}
+
+/* Heartbeat animation */
+.heartbeat {
+  margin:15px 0;
+  width:40px;
+  height:40px;
+}
+.heartbeat div {
+  width:100%;
+  height:100%;
+  background:red;
+  border-radius:50%;
+  animation: heartbeat 1s infinite;
+}
+@keyframes heartbeat {
+  0% { transform: scale(1);}
+  25% { transform: scale(1.4);}
+  50% { transform: scale(1);}
+  75% { transform: scale(1.4);}
+  100% { transform: scale(1);}
+}
+
+/* Forms and dashboard inputs */
+input {
+  width:90%;
+  margin:10px 0;
+  padding:10px;
+  border-radius:8px;
+  border: 2px solid #0ff;
+  background:#111122;
+  color:white;
+  outline:none;
+  font-size:14px;
+}
+
+/* Neon buttons */
+.neon-btn {
+  margin-top:10px;
+  padding:10px 20px;
+  border:none;
+  border-radius:12px;
+  background:#0ff;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
+  transition:0.2s;
+}
+.neon-btn:hover {
+  box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+}
+
+/* Dashboard panels */
+.dashboard-card .panel {
+  margin:15px 0;
+  padding:15px;
+  border:2px solid #0ff;
+  border-radius:15px;
+  background:#111122;
+}
+
+#video-result {
+  background:#0f0f17;
+  padding:10px;
+  border-radius:8px;
+  font-size:12px;
+  height:100px;
+  overflow:auto;
+  border:2px solid #0ff;
+}
