@@ -4,7 +4,6 @@ const BASE_URL = "https://elitetok-1.onrender.com";
 async function login() {
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
-
   if (!email || !password) return alert("Enter email and password");
 
   try {
@@ -30,7 +29,6 @@ async function signup() {
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
   const referral = document.getElementById("signup-ref").value || "";
-
   if (!email || !password) return alert("Enter email and password");
 
   try {
@@ -55,7 +53,6 @@ async function signup() {
 async function loadPoints() {
   const token = localStorage.getItem("token");
   if (!token) return;
-
   try {
     const res = await fetch(`${BASE_URL}/user/points`, {
       headers: { "Authorization": `Bearer ${token}` }
@@ -73,7 +70,6 @@ async function useReferral() {
   const ref = document.getElementById("ref-code").value;
   const token = localStorage.getItem("token");
   if (!ref || !token) return alert("Enter referral code");
-
   try {
     const res = await fetch(`${BASE_URL}/user/referral`, {
       method: "POST",
@@ -100,7 +96,6 @@ async function analyzeVideo() {
   const url = document.getElementById("video-url").value;
   const token = localStorage.getItem("token");
   if (!url) return alert("Enter video URL");
-
   try {
     const res = await fetch(`${BASE_URL}/video/analyze`, {
       method: "POST",
@@ -114,6 +109,39 @@ async function analyzeVideo() {
     document.getElementById("video-result").innerText = data.result || "Analysis done ✅";
   } catch (err) {
     document.getElementById("video-result").innerText = "Error analyzing video: " + err.message;
+  }
+}
+
+// Kofi Payment
+function startPayment() {
+  window.open("https://ko-fi.com/elitetok", "_blank");
+  checkPaymentStatus();
+}
+
+async function checkPaymentStatus(attempts = 0) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+  try {
+    const res = await fetch(`${BASE_URL}/user/points`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    const data = await res.json();
+    const pointsEl = document.getElementById("points");
+    const statusEl = document.getElementById("payment-status");
+    if (pointsEl) pointsEl.innerText = data.points || 0;
+
+    if (data.recentPayment) {
+      statusEl.innerText = "Payment received! +100 points 💖";
+      return;
+    } else if (attempts < 12) {
+      statusEl.innerText = "Waiting for payment confirmation...";
+      setTimeout(() => checkPaymentStatus(attempts + 1), 5000);
+    } else {
+      statusEl.innerText = "Payment not confirmed yet. Refresh after a while.";
+    }
+  } catch (err) {
+    console.log("Payment check error:", err.message);
+    if (attempts < 12) setTimeout(() => checkPaymentStatus(attempts + 1), 5000);
   }
 }
 
