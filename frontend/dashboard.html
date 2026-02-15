@@ -2,39 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard - EliteTok</title>
-  <link rel="stylesheet" href="frontend/style.css">
+  <title>Dashboard - Elite Tok</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-  <div class="centered-container">
-    <div class="dashboard-card">
-      <h2>Dashboard</h2>
-      <p>Your Points: <span id="points">0</span></p>
-
-      <!-- Referral -->
-      <div class="panel">
-        <h3>Referral</h3>
-        <input type="text" id="ref-code" placeholder="Enter referral code">
-        <button class="neon-btn" onclick="useReferral()">Apply Referral</button>
-      </div>
-
-      <!-- Video Analyzer -->
-      <div class="panel">
-        <h3>Video Analyzer</h3>
-        <input type="text" id="video-url" placeholder="Enter video URL">
-        <button class="neon-btn" onclick="analyzeVideo()">Analyze</button>
-        <div id="video-result"></div>
-      </div>
-
-      <!-- Kofi Payment -->
-      <div class="panel">
-        <h3>Buy Points</h3>
-        <p>£10 → 100 Points</p>
-        <button class="neon-btn" onclick="startPayment()">Pay Now</button>
-        <p id="payment-status" style="margin-top:10px; color:#ff4d4d;"></p>
-      </div>
-    </div>
+<body class="h-screen bg-dark-bg text-white flex flex-col items-center p-6 gap-6">
+  <h1 class="neon-text text-3xl font-bold">Dashboard</h1>
+  
+  <div class="glass-dark p-6 rounded-xl w-full max-w-md text-center">
+    <p>Points: <span id="points">0</span></p>
+    <input id="ref-code" type="text" placeholder="Referral Code" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <button onclick="useReferral()" class="hover-lift py-2 px-4 rounded bg-gold text-black font-semibold w-full">Apply Referral</button>
+    <p id="payment-status" class="mt-2"></p>
+    <button onclick="startPayment()" class="hover-lift py-2 px-4 rounded bg-primary text-black font-semibold w-full mt-2">Pay £10 → +100 Points</button>
   </div>
+
+  <div class="glass-dark p-6 rounded-xl w-full max-w-md text-center">
+    <input id="video-url" type="text" placeholder="Video URL" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <button onclick="analyzeVideo()" class="hover-lift py-2 px-4 rounded bg-primary text-black font-semibold w-full">Analyze Video</button>
+    <p id="video-result" class="mt-2"></p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
