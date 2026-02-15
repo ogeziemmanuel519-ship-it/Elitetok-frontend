@@ -112,36 +112,38 @@ async function analyzeVideo() {
   }
 }
 
-// Kofi Payment
+// Kofi Payment + Polling
 function startPayment() {
   window.open("https://ko-fi.com/elitetok", "_blank");
-  checkPaymentStatus();
+  pollPaymentStatus(0); // start polling immediately
 }
 
-async function checkPaymentStatus(attempts = 0) {
+async function pollPaymentStatus(attempts) {
+  const maxAttempts = 12; // 1 min total, 5 sec interval
   const token = localStorage.getItem("token");
+  const statusEl = document.getElementById("payment-status");
+  const pointsEl = document.getElementById("points");
   if (!token) return;
+
   try {
     const res = await fetch(`${BASE_URL}/user/points`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
     const data = await res.json();
-    const pointsEl = document.getElementById("points");
-    const statusEl = document.getElementById("payment-status");
     if (pointsEl) pointsEl.innerText = data.points || 0;
 
     if (data.recentPayment) {
       statusEl.innerText = "Payment received! +100 points 💖";
       return;
-    } else if (attempts < 12) {
+    } else if (attempts < maxAttempts) {
       statusEl.innerText = "Waiting for payment confirmation...";
-      setTimeout(() => checkPaymentStatus(attempts + 1), 5000);
+      setTimeout(() => pollPaymentStatus(attempts + 1), 5000);
     } else {
-      statusEl.innerText = "Payment not confirmed yet. Refresh after a while.";
+      statusEl.innerText = "Payment not confirmed yet. Try refreshing later.";
     }
   } catch (err) {
-    console.log("Payment check error:", err.message);
-    if (attempts < 12) setTimeout(() => checkPaymentStatus(attempts + 1), 5000);
+    console.log("Kofi polling error:", err.message);
+    if (attempts < maxAttempts) setTimeout(() => pollPaymentStatus(attempts + 1), 5000);
   }
 }
 
