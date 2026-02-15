@@ -2,18 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - EliteTok</title>
-  <link rel="stylesheet" href="frontend/style.css">
+  <title>Login - Elite Tok</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-  <div class="centered-container">
-    <div class="form-card">
-      <h2>Login</h2>
-      <input type="email" placeholder="Email" id="login-email">
-      <input type="password" placeholder="Password" id="login-password">
-      <button class="neon-btn" onclick="login()">Login</button>
-      <p>Don't have an account? <a href="signup.html">Signup</a></p>
-    </div>
+<body class="h-screen bg-dark-bg text-white flex items-center justify-center">
+  <div class="glass-dark p-8 rounded-xl w-80 text-center">
+    <h2 class="neon-text text-2xl font-bold mb-4">Login</h2>
+    <input id="login-email" type="email" placeholder="Email" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <input id="login-password" type="password" placeholder="Password" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <button onclick="login()" class="hover-lift py-2 px-4 rounded bg-primary text-black font-semibold w-full">Login</button>
+    <p class="mt-4 text-sm">Don't have an account? <a href="signup.html" class="text-gold">Sign Up</a></p>
   </div>
   <script src="script.js"></script>
 </body>
