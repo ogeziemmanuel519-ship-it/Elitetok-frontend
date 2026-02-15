@@ -8,32 +8,30 @@
 <body class="fade-in">
   <div class="centered-container">
     <div class="dashboard-card">
-      <h1>EliteTok Dashboard</h1>
+      <h2>Dashboard</h2>
+      <p>Your Points: <span id="points">0</span></p>
 
+      <!-- Referral -->
       <div class="panel">
-        <h3>Points</h3>
-        <h1 id="points">0</h1>
+        <h3>Referral</h3>
+        <input type="text" id="ref-code" placeholder="Enter referral code">
+        <button class="neon-btn" onclick="useReferral()">Apply Referral</button>
       </div>
 
+      <!-- Video Analyzer -->
       <div class="panel">
-        <h3>Analyze Video</h3>
-        <input type="text" placeholder="Video URL" id="video-url">
+        <h3>Video Analyzer</h3>
+        <input type="text" id="video-url" placeholder="Enter video URL">
         <button class="neon-btn" onclick="analyzeVideo()">Analyze</button>
-        <pre id="video-result"></pre>
+        <div id="video-result"></div>
       </div>
 
+      <!-- Kofi Payment -->
       <div class="panel">
         <h3>Buy Points</h3>
         <p>£10 → 100 Points</p>
-        <a href="https://ko-fi.com/elitetok" target="_blank">
-          <button class="neon-btn">Pay Now</button>
-        </a>
-      </div>
-
-      <div class="panel">
-        <h3>Referral</h3>
-        <input type="text" placeholder="Referral Code" id="ref-code">
-        <button class="neon-btn" onclick="useReferral()">Apply</button>
+        <button class="neon-btn" onclick="startPayment()">Pay Now</button>
+        <p id="payment-status" style="margin-top:10px; color:#ff4d4d;"></p>
       </div>
     </div>
   </div>
