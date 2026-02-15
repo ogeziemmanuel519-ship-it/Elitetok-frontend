@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - EliteTok</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="fade-in">
+  <div class="centered-container">
+    <div class="dashboard-card">
+      <h1>EliteTok Dashboard</h1>
+
+      <div class="panel">
+        <h3>Points</h3>
+        <h1 id="points">0</h1>
+      </div>
+
+      <div class="panel">
+        <h3>Analyze Video</h3>
+        <input type="text" placeholder="Video URL" id="video-url">
+        <button class="neon-btn" onclick="analyzeVideo()">Analyze</button>
+        <pre id="video-result"></pre>
+      </div>
+
+      <div class="panel">
+        <h3>Buy Points</h3>
+        <p>£10 → 100 Points</p>
+        <a href="https://ko-fi.com/elitetok" target="_blank">
+          <button class="neon-btn">Pay Now</button>
+        </a>
+      </div>
+
+      <div class="panel">
+        <h3>Referral</h3>
+        <input type="text" placeholder="Referral Code" id="ref-code">
+        <button class="neon-btn" onclick="useReferral()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
