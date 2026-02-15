@@ -2,19 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Signup - EliteTok</title>
+  <title>Sign Up - Elite Tok</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="fade-in">
-  <div class="centered-container">
-    <div class="form-card">
-      <h2>Signup</h2>
-      <input type="email" placeholder="Email" id="signup-email">
-      <input type="password" placeholder="Password" id="signup-password">
-      <input type="text" placeholder="Referral Code" id="signup-ref">
-      <button class="neon-btn" onclick="signup()">Signup</button>
-      <p>Already have an account? <a href="login.html">Login</a></p>
-    </div>
+<body class="h-screen bg-dark-bg text-white flex items-center justify-center">
+  <div class="glass-dark p-8 rounded-xl w-80 text-center">
+    <h2 class="neon-text text-2xl font-bold mb-4">Sign Up</h2>
+    <input id="signup-email" type="email" placeholder="Email" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <input id="signup-password" type="password" placeholder="Password" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <input id="signup-ref" type="text" placeholder="Referral Code (Optional)" class="mb-3 p-2 w-full rounded bg-gray-800 text-white">
+    <button onclick="signup()" class="hover-lift py-2 px-4 rounded bg-gold text-black font-semibold w-full">Sign Up</button>
+    <p class="mt-4 text-sm">Already have an account? <a href="login.html" class="text-primary">Login</a></p>
   </div>
   <script src="script.js"></script>
 </body>
