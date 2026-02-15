@@ -1,242 +1,70 @@
-/* Elite Tok - Global Styles */
-
+/* Global Styles */
 :root {
-    --primary: #8b5cf6;
-    --gold: #fbbf24;
+    --primary: #3b82f6; /* Blue neon */
     --dark-bg: #0a0a0a;
-    --glass-bg: rgba(26, 26, 26, 0.8);
+    --glass-bg: rgba(26,26,26,0.8);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+/* Body & text */
+body {
+    margin:0;
+    font-family:sans-serif;
+    background: var(--dark-bg);
+    color:white;
 }
 
-::-webkit-scrollbar-track {
-    background: #1a1a1a;
+input, button {
+    font-family: inherit;
 }
 
-::-webkit-scrollbar-thumb {
-    background: #3a3a3a;
-    border-radius: 4px;
+/* Neon & Glass */
+.neon-text {
+    text-shadow: 0 0 8px var(--primary), 0 0 16px var(--primary), 0 0 24px var(--primary);
+}
+.glass-dark {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #4a4a4a;
+/* Buttons */
+button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
-/* Animations */
+/* Animated gradient */
+.animated-gradient {
+    background: linear-gradient(120deg, #3b82f6, #06b6d4, #3b82f6);
+    background-size: 200% 200%;
+    animation: gradient-shift 10s ease infinite;
+}
 @keyframes gradient-shift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-.animated-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 15s ease infinite;
-}
-
-/* Glassmorphism Utilities */
-.glass-dark {
-    background: rgba(15, 15, 15, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-
-/* Mobile-specific fixes */
-@supports (-webkit-touch-callout: none) {
-    .h-screen {
-        height: -webkit-fill-available;
-    }
-}
-
-/* Radio Button Custom Styling */
-input[type="radio"]:checked + div {
-    border-color: var(--primary);
-    background-color: rgba(139, 92, 246, 0.1);
-}
-
-/* Range Slider */
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-track {
-    background: #2a2a2a;
-    height: 6px;
-    border-radius: 3px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -5px;
-    background-color: var(--primary);
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
-}
-
-/* Toggle Switch */
-.toggle-checkbox:checked {
-    right: 0;
-    border-color: var(--primary);
-}
-
-.toggle-checkbox:checked + .toggle-label {
-    background-color: var(--primary);
-}
-
-/* Loading Skeleton */
-.skeleton {
-    background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-/* Chart Container */
-.chart-container {
-    position: relative;
-    height: 200px;
-    width: 100%;
-}
-
-/* Toast Notifications */
-.toast {
-    position: fixed;
-    bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: rgba(26, 26, 26, 0.95);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    padding: 12px 24px;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    z-index: 100;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-}
-
-.toast.success {
-    border-color: #10b981;
-}
-
-.toast.error {
-    border-color: #ef4444;
-}
-
-/* Confetti Animation */
-.confetti {
-    position: fixed;
-    width: 10px;
+/* Breakdown bars */
+.breakdown-bar {
     height: 10px;
-    background-color: #fbbf24;
-    position: absolute;
-    animation: confetti-fall 3s linear forwards;
-    z-index: 1000;
+    border-radius: 5px;
+    background: #222;
+    position: relative;
+    overflow: hidden;
+}
+.breakdown-fill {
+    height: 100%;
+    width: 0;
+    background: var(--primary);
+    transition: width 1s ease;
 }
 
-@keyframes confetti-fall {
-    0% {
-        transform: translateY(-100vh) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-    }
-}
-
-/* Progress Ring */
-.progress-ring {
-    transform: rotate(-90deg);
-}
-
-.progress-ring-circle {
-    transition: stroke-dashoffset 0.35s;
-    transform-origin: 50% 50%;
-}
-
-/* Neon Glow Effects */
-.neon-text {
-    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5),
-                 0 0 20px rgba(139, 92, 246, 0.3),
-                 0 0 30px rgba(139, 92, 246, 0.1);
-}
-
-.gold-glow {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-}
-
-/* Card Hover Effects */
-.hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive Typography */
+/* Responsive text */
 @media (max-width: 640px) {
-    html {
-        font-size: 14px;
-    }
-}
-
-/* Print Styles for PDF */
-@media print {
-    body {
-        background: white;
-        color: black;
-    }
-    
-    .no-print {
-        display: none;
-    }
-}
-
-/* Admin Panel Specific */
-.admin-table th {
-    text-align: left;
-    padding: 12px;
-    font-weight: 600;
-    color: #9ca3af;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-}
-
-.admin-table td {
-    padding: 12px;
-    border-bottom: 1px solid #2a2a2a;
-}
-
-/* Safe Area Insets for Mobile */
-.safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* Focus Visible for Accessibility */
-*:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+    body { font-size:14px; }
 }
