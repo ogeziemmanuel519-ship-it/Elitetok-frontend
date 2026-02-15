@@ -1,153 +1,76 @@
-const BASE_URL = "https://elitetok-1.onrender.com";
+// Points system
+if (!localStorage.getItem("points")) localStorage.setItem("points", "1000");
 
-// Login
-async function login() {
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
-  if (!email || !password) return alert("Enter email and password");
+// Elements
+const analyzeVideoBtn = document.getElementById("analyzeVideoBtn");
+const videoUrlInput = document.getElementById("videoUrl");
+const analysisResult = document.getElementById("analysisResult");
+const videoScoreDiv = document.getElementById("videoScore");
+const scoreBreakdownDiv = document.getElementById("scoreBreakdown");
+const pointsDisplay = document.getElementById("points");
 
-  try {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      window.location.href = "dashboard.html";
-    } else {
-      alert(data.message || "Login failed");
+analyzeVideoBtn.addEventListener("click", () => {
+    let currentPoints = parseInt(localStorage.getItem("points") || "0");
+
+    if (currentPoints < 5) {
+        alert("Not enough Elite Coins to analyze video!");
+        return;
     }
-  } catch (err) {
-    alert("Login error: " + err.message);
-  }
-}
 
-// Signup
-async function signup() {
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
-  const referral = document.getElementById("signup-ref").value || "";
-  if (!email || !password) return alert("Enter email and password");
-
-  try {
-    const res = await fetch(`${BASE_URL}/auth/signup`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ email, password, referral })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      window.location.href = "dashboard.html";
-    } else {
-      alert(data.message || "Signup failed");
+    const videoUrl = videoUrlInput.value.trim();
+    if (!videoUrl) {
+        alert("Please paste a video URL!");
+        return;
     }
-  } catch (err) {
-    alert("Signup error: " + err.message);
-  }
-}
 
-// Load points
-async function loadPoints() {
-  const token = localStorage.getItem("token");
-  if (!token) return;
-  try {
-    const res = await fetch(`${BASE_URL}/user/points`, {
-      headers: { "Authorization": `Bearer ${token}` }
+    // Deduct coins
+    currentPoints -= 5;
+    localStorage.setItem("points", currentPoints);
+    pointsDisplay.textContent = currentPoints;
+
+    // Show analysis result
+    analysisResult.textContent = `Video analyzed! ✅ Elite Coins deducted: 5. Video: ${videoUrl}`;
+
+    // Simulate video rating algorithm
+    const videoLength = Math.floor(Math.random() * 10) + 1; // 1-10 mins
+    const engagement = Math.random(); // 0.0 - 1.0
+    const lengthPenalty = (videoLength / 10).toFixed(2);
+    const engagementBonus = (engagement * 1.5).toFixed(2);
+    let rawScore = 5 - (videoLength / 10) + (engagement * 1.5); 
+    let score = Math.min(Math.max(Math.round(rawScore), 1), 5);
+
+    // Show stars
+    let stars = "";
+    for (let i = 0; i < 5; i++) stars += i < score ? "★" : "☆";
+    videoScoreDiv.textContent = `Video Score: ${stars} (${score}/5)`;
+
+    // Breakdown with animated bars
+    scoreBreakdownDiv.innerHTML = ""; // Clear previous
+
+    const breakdowns = [
+        {label: "Length Penalty", value: lengthPenalty},
+        {label: "Engagement Bonus", value: engagementBonus},
+        {label: "Raw Score", value: rawScore.toFixed(2)}
+    ];
+
+    breakdowns.forEach(b => {
+        const barContainer = document.createElement("div");
+        barContainer.className = "breakdown-bar";
+
+        const barFill = document.createElement("div");
+        barFill.className = "breakdown-fill";
+        barContainer.appendChild(barFill);
+
+        const label = document.createElement("div");
+        label.textContent = `${b.label}: ${b.value}`;
+        label.style.fontSize = "0.8rem";
+        label.style.marginBottom = "2px";
+
+        scoreBreakdownDiv.appendChild(label);
+        scoreBreakdownDiv.appendChild(barContainer);
+
+        // Animate bar width proportional to value (max 5)
+        const widthPercent = Math.min(b.value / 5 * 100, 100);
+        setTimeout(() => { barFill.style.width = widthPercent + "%"; }, 50);
     });
-    const data = await res.json();
-    const pointsEl = document.getElementById("points");
-    if (pointsEl) pointsEl.innerText = data.points || 0;
-  } catch (err) {
-    console.log("Error fetching points:", err.message);
-  }
-}
-
-// Referral
-async function useReferral() {
-  const ref = document.getElementById("ref-code").value;
-  const token = localStorage.getItem("token");
-  if (!ref || !token) return alert("Enter referral code");
-  try {
-    const res = await fetch(`${BASE_URL}/user/referral`, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ referralCode: ref })
-    });
-    const data = await res.json();
-    if (res.ok) {
-      alert("Referral applied! +4 points 💖");
-      loadPoints();
-    } else {
-      alert(data.message || "Referral failed");
-    }
-  } catch (err) {
-    alert("Referral error: " + err.message);
-  }
-}
-
-// Video Analyzer
-async function analyzeVideo() {
-  const url = document.getElementById("video-url").value;
-  const token = localStorage.getItem("token");
-  if (!url) return alert("Enter video URL");
-  try {
-    const res = await fetch(`${BASE_URL}/video/analyze`, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ videoUrl: url })
-    });
-    const data = await res.json();
-    document.getElementById("video-result").innerText = data.result || "Analysis done ✅";
-  } catch (err) {
-    document.getElementById("video-result").innerText = "Error analyzing video: " + err.message;
-  }
-}
-
-// Kofi Payment + Polling
-function startPayment() {
-  window.open("https://ko-fi.com/elitetok", "_blank");
-  pollPaymentStatus(0); // start polling immediately
-}
-
-async function pollPaymentStatus(attempts) {
-  const maxAttempts = 12; // 1 min total, 5 sec interval
-  const token = localStorage.getItem("token");
-  const statusEl = document.getElementById("payment-status");
-  const pointsEl = document.getElementById("points");
-  if (!token) return;
-
-  try {
-    const res = await fetch(`${BASE_URL}/user/points`, {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
-    const data = await res.json();
-    if (pointsEl) pointsEl.innerText = data.points || 0;
-
-    if (data.recentPayment) {
-      statusEl.innerText = "Payment received! +100 points 💖";
-      return;
-    } else if (attempts < maxAttempts) {
-      statusEl.innerText = "Waiting for payment confirmation...";
-      setTimeout(() => pollPaymentStatus(attempts + 1), 5000);
-    } else {
-      statusEl.innerText = "Payment not confirmed yet. Try refreshing later.";
-    }
-  } catch (err) {
-    console.log("Kofi polling error:", err.message);
-    if (attempts < maxAttempts) setTimeout(() => pollPaymentStatus(attempts + 1), 5000);
-  }
-}
-
-// Load points on dashboard
-document.addEventListener("DOMContentLoaded", () => {
-  if (document.getElementById("points")) loadPoints();
 });
