@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
 
-// Updated backend URL
 const API = "https://backend-9jp6.onrender.com";
 
 export default function App() {
@@ -19,79 +18,122 @@ export default function App() {
 
   // ================= AUTH =================
   const signup = async () => {
-    const res = await fetch(API + "/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, ref }),
-    });
-    alert(await res.text());
+    if (!email || !password) {
+      alert("Please enter email and password!");
+      return;
+    }
+
+    try {
+      const res = await fetch(API + "/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, ref }),
+      });
+
+      const text = await res.text();
+
+      if (res.ok) {
+        alert("Signup successful! You can now log in.");
+      } else {
+        alert("Signup failed: " + text);
+      }
+    } catch (err) {
+      alert("Error connecting to backend: " + err.message);
+    }
   };
 
   const login = async () => {
-    const res = await fetch(API + "/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    if (!email || !password) {
+      alert("Please enter email and password!");
+      return;
+    }
 
-    const data = await res.json();
-    setToken(data.token);
-    loadCoins(data.token);
+    try {
+      const res = await fetch(API + "/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.token) {
+        setToken(data.token);
+        loadCoins(data.token);
+        alert("Login successful!");
+      } else {
+        alert("Login failed: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      alert("Error connecting to backend: " + err.message);
+    }
   };
 
   const loadCoins = async (t) => {
-    const res = await fetch(API + "/coins", {
-      headers: { Authorization: t },
-    });
-    const data = await res.json();
-    setCoins(data.coins);
+    try {
+      const res = await fetch(API + "/coins", {
+        headers: { Authorization: t },
+      });
+      const data = await res.json();
+      setCoins(data.coins);
+    } catch (err) {
+      alert("Error fetching coins: " + err.message);
+    }
   };
 
   // ================= VIDEO ANALYSIS =================
   const analyzeVideo = async () => {
-    if (!video) return;
+    if (!video) return alert("Select a video first!");
+    try {
+      const form = new FormData();
+      form.append("video", video);
 
-    const form = new FormData();
-    form.append("video", video);
+      const res = await fetch(API + "/analyze", {
+        method: "POST",
+        headers: { Authorization: token },
+        body: form,
+      });
 
-    const res = await fetch(API + "/analyze", {
-      method: "POST",
-      headers: { Authorization: token },
-      body: form,
-    });
+      const data = await res.json();
 
-    const data = await res.json();
+      if (data.error) return alert(data.error);
 
-    setVideoResult(
-      `Score: ${data.score}/100
+      setVideoResult(
+        `Score: ${data.score}/100
 Engagement: ${data.engagement}
 Viral: ${data.viral}`
-    );
+      );
 
-    loadCoins(token);
+      loadCoins(token);
+    } catch (err) {
+      alert("Error analyzing video: " + err.message);
+    }
   };
 
   // ================= THUMBNAIL AI =================
   const scoreThumb = async () => {
-    if (!thumb) return;
+    if (!thumb) return alert("Select a thumbnail first!");
+    try {
+      const form = new FormData();
+      form.append("image", thumb);
 
-    const form = new FormData();
-    form.append("image", thumb);
+      const res = await fetch(API + "/thumbnail-score", {
+        method: "POST",
+        headers: { Authorization: token },
+        body: form,
+      });
 
-    const res = await fetch(API + "/thumbnail-score", {
-      method: "POST",
-      headers: { Authorization: token },
-      body: form,
-    });
+      const data = await res.json();
 
-    const data = await res.json();
-
-    setThumbResult(
-      `Score: ${data.score}/100
+      setThumbResult(
+        `Score: ${data.score}/100
 Brightness: ${data.brightness}
 Contrast: ${data.contrast}
 Sharpness: ${data.sharpness}`
-    );
+      );
+    } catch (err) {
+      alert("Error scoring thumbnail: " + err.message);
+    }
   };
 
   // ================= KO-FI =================
